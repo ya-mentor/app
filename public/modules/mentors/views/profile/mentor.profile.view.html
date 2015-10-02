@@ -1,0 +1,83 @@
+<section data-ng-controller="MentorController" data-ng-init="findOne()">
+    <section  class="content mentors">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2 mentor-img">
+                    <img ng-hide="mentor.photo" ng-src="/modules/mentors/img/avatar.png" />
+                    <img ng-show="mentor.photo" ng-src="{mentor.picture}}" />
+                </div>
+                <div class="col-md-6">
+                    <div class="mentor-info">
+                        <h3>{{mentor.firstName}} {{mentor.lastName}}</h3></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content fellows">
+        <div class="container">
+            <div class="row">
+                <col-sm-12>
+                    <div class="unit-wrap bio">
+                        <div class="user-profile">
+                            <h4>Bio</h4>
+                            <hr/>
+                            <p>{{mentor.bio}}</p>
+                        </div>
+                    </div>
+                    <div class="unit-wrap bio">
+                        <div class="user-profile">
+                            <h4>Profile Details</h4>
+                            <hr/>
+                            <dl class="dl-horizontal">
+                                <dt>Full Name</dt>
+                                <dd>{{mentor.firstName}} {{mentor.lastName}} </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Email</dt>
+                                <dd>{{mentor.email}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Date Joined</dt>
+                                <dd>{{mentor.created | date}}</dd>
+                            </dl>
+                            <dl ng-show="mentor.gitHubUrl" class="dl-horizontal">
+                                <dt>Github</dt>
+                                <dd><a ng-href="http://{{mentor.gitHubUrl}}">{{mentor.gitHubUrl}}</a></dd>
+                            </dl>
+                            <dl ng-show="mentor.location" class="dl-horizontal">
+                                <dt>Location</dt>
+                                <dd>{{mentor.location}}</dd>
+                            </dl>
+                            <dl ng-show="mentor.linkedInUrl" class="dl-horizontal">
+                                <dt>LinkedIn</dt>
+                                <dd><a ng-href="http://{{mentor.linkedInUrl}}">{{mentor.linkedInUrl}}</a></dd>
+                            </dl>
+                            <dl ng-show="mentor.twitterHandle" class="dl-horizontal">
+                                <dt>Twitter</dt>
+                                <dd>{{mentor.twitterHandle}}</dd>
+                            </dl>
+                            <dl ng-show="mentor.Skype" class="dl-horizontal">
+                                <dt>Skype</dt>
+                                <dd>{{mentor.Skype}}</dd>
+                            </dl>
+                            <dl ng-show="mentor.phone" class="dl-horizontal">
+                                <dt>Phone</dt>
+                                <dd>{{mentor.phone}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div ng-if="currentUser.uid === mentor.uid &amp;&amp; mentor.fellows" class="user-wrap bio">
+                        <h4>My Fellows</h4>
+                        <hr/>
+                        <div class="row">
+                            <my-connections info="fellow" ng-repeat="(user_id, user) in mentor.fellows"></my-connections>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div ng-click="confirmation(sm)" ng-if="currentUser.isAdmin" class="col-md-2 btn btn-danger delete pull-right">Delete User</div>
+                    </div>
+                </col-sm-12>
+            </div>
+        </div>
+    </section>
+</section>

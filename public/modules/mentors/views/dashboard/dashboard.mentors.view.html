@@ -1,0 +1,30 @@
+<div data-ng-controller="MentorController" class="container">
+    <h2 class="light">Mentors</h2>
+    <hr/>
+    <div class="row">
+        <div ng-if="mentor" ng-repeat="mentor in mentors" class="col-xs-6 col-sm-3">
+            <a ng-href="/#!/mentor/{{mentor._id}}">
+                <div class="user-wrap">
+                    <div class="profile-pic">
+                        <span class="f-badge">M</span><img  ng-hide="mentor.photo" ng-src="/modules/mentors/img/avatar.png" />
+                        </span><img ng-show="mentor.photo" ng-src="{{mentor.photo}}" />
+                    </div>
+                    <div class="user-name">
+                        <h5 class="text-wrap">{{mentor.firstName}} {{mentor.lastName}} </h5>
+                        <p class="text-muted text-wrap">{{mentor.email}}</p>
+                        <p class="text-muted text-wrap">@{{mentor.username}}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <nav>
+        <ul class="pagination">
+            <li><a ng-click="shuffle()"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+            <li ng-repeat="page in pageCount track by $index">
+                <a ng-click="navigate($index)" ng-bind="$index + 1"></a>
+            </li>
+            <li><a ng-click="shuffle(true)"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+        </ul>
+    </nav>
+</div>

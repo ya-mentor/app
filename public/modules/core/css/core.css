@@ -1,0 +1,170 @@
+body {
+    background-color: #E3E9F2;
+}
+
+button,
+select,
+html,
+textarea,
+input {
+    font-family: RobotoDraft, 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.content {
+    /*margin-top: 50px;*/
+}
+
+.undecorated-link:hover {
+    text-decoration: none;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.ng-invalid.ng-dirty {
+    border-color: #FA787E;
+}
+
+.ng-valid.ng-dirty {
+    border-color: #78FA89;
+}
+
+.navbar {
+    background-color: #009688 !important;
+    color: white
+}
+
+.navbar a {
+    color: white;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: #ffffff;
+    margin-right: 10px;
+}
+
+.hero {
+    height: 500px;
+    width: 100%;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.52);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.get-started {
+    background-color: rgba(255, 255, 255, 0.77);
+    padding: 7%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 18%;
+    width: 50%;
+    margin: 0 auto;
+    z-index: 5;
+    border-radius: 2%;
+}
+
+.how-it-works {
+    min-height: 330px;
+    background-color: rgba(237, 237, 237, 0.29);
+}
+
+.box-container {
+    margin: 0 auto;
+    margin-top: 2em;
+}
+
+.box {
+    height: 220px;
+    background-color: white;
+    padding: 10px;
+    border-radius: .5em;
+    margin-bottom: 1em;
+}
+
+.hiw-title {
+    font-size: 1.5em;
+}
+
+.hiw-text {
+    font-size: 1em;
+}
+
+.glyphicon {
+    font-size: 3em;
+    color: #009688;
+    border: 1px solid;
+    padding: 14px;
+    border-radius: 100%;
+}
+
+.box * {
+    margin-top: .5em;
+}
+
+.get-started-btn {
+    background-color: #009688;
+    color: white;
+    border: 2px solid;
+    margin-top: 2em;
+}
+
+.get-started-btn:hover {
+    background-color: white;
+    color: #009688;
+}
+
+.about-us {
+    min-height: 200px;
+    background-color: #004D40;
+}
+
+.final {
+    color: #DDDDDD;
+    width: 60%;
+    margin: 0 auto;
+    font-size: 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.footer {
+    padding: 10px;
+    background-color: #212121;
+    color: #DDDDDD;
+    font-size: .8em;
+}
+
+@media only screen and (max-width: 800px) {
+    .get-started {
+        width: 80%;
+        height: 70%;
+    }
+}
+
+.role {
+    height: 450px;
+    width: 60%;
+    margin: 60px auto;
+    background: rgba(204, 204, 204, 0.42);
+    position: relative;
+    border-radius: 2%;
+}
+.btn-primary1 {
+ background-color: #009688;
+ }
+
+.google-btn {
+   width:300px;
+   height:60px;
+}

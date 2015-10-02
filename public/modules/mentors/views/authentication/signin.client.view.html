@@ -1,0 +1,38 @@
+<section class="row" data-ng-controller="AuthenticationController">
+    <div collapse="isCollapsed">
+        <div class="well well-sm text-center">
+            <h2>Sign In</h2>
+        </div>
+    </div>
+    <hr>
+    <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
+        <form data-ng-submit="signin()" class="signin form-horizontal" autocomplete="off">
+            <fieldset>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" data-ng-model="credentials.username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
+                </div>
+                <div class="text-center form-group">
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                </div>
+                <div class="forgot-password text-center">
+                    <a href="/#!/password/forgot">Forgot your password?</a>
+                </div>
+                <div data-ng-show="error" class="text-center text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+                <hr>
+                <h5 class="col-md-12 text-center">Or</h5>
+                <div style="text-align: center;">
+                    <a href="/auth/google">
+                        <img class="google-btn" src="/modules/mentors/img/buttons/google-signin-logo.png">
+                    </a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>
