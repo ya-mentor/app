@@ -145,6 +145,14 @@ module.exports = function(grunt) {
 		    src: "app/",
 		    dest: "docs/"
 		  }
+		},
+		serve: {
+		  options: {
+		    port: 9000,
+		    serve: {
+		      path: './docs/'
+		    }
+		  }
 		}
 	});
 

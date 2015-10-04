@@ -1,7 +1,7 @@
 {
 	"name": "ya-mentor",
 	"version": "0.0.1",
-	"description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js",
+	"description": "mentorship and networking platform",
 	"dependencies": {
 		"bootstrap": "~3",
 		"angular": "~1.2",
