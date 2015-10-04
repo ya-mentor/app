@@ -13,6 +13,16 @@ module.exports = function(app) {
     .get(mentors.list)
     .post(users.requiresLogin, mentors.create);
 
+  /**
+  * @api {get} /mentors/:mentorId Get a mentor's details
+  * @apiName GetMentor
+  * @apiGroup Mentor
+  *
+  * @apiParam {String} mentorId mentor's unique id.
+  *
+  * @apiSuccess {Object} mentor object containing all mentor's details
+  * @apiError {404} MentorNotFound The <code>id</code> supplied doesn't match any mentor
+  */
   app.route('/mentors/:mentorId')
     .get(mentors.read)
     .put(users.requiresLogin, mentors.hasAuthorization, mentors.update)
