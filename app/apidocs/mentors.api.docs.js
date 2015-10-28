@@ -13,7 +13,7 @@
 * The object contains the properties below
 * @apiParam {String} firstname  Mandatory Firstname of the User with default value null
 * @apiParam {String} lastname     Mandatory Lastname of the User with default value null
-* @apiParam {String} email="DE" Mandatory Email of the User with default value null
+* @apiParam {String} email Mandatory Email of the User with default value null
 * @apiParam {String} username  Mandatory Username of the User with default value null
 * @apiParam {String} password     Mandatory password of the User with default value null
 * @apiParam {String} [address] Optional with default value null
@@ -21,12 +21,13 @@
 * @apiParam {String} [photo]  Optional picture of the User.
 * @apiParam {String} [linkedIn]     optional with default value null
 * @apiParam {String} [skills] optional with default value null
-* @apiParam {String} provider Mandatory with default value null.
+* @apiParam {String} role Mandatory with default value null.
 *
 *
 * @apiSuccess {Object} mentor object containing the newly created mentor's details
 * @apiError {400} Error 400 with the error response.
 */
+
 
 /**
 * @api {get} /mentors Get a list of all mentors
@@ -40,6 +41,7 @@
 * @apiError {400} Error 400 with the error response.
 */
 
+
 /**
 * @api {get} /mentors/:mentorId Find a mentor instance by id
 * @apiName readMentor
@@ -50,6 +52,8 @@
 * @apiSuccess {Object} mentor object containing a single mentor's details
 * @apiError {400} MentorNotFound The <code>id</code> supplied doesn't match any mentor
 */
+
+
 
 /**
 * @api {put} /mentors/:mentorId
@@ -62,9 +66,10 @@
 *
 * @apiParam {String} mentor's unique id.
 
-* @apiSuccess {Object} mentor object containing a single mentor's details
+* @apiSuccess {Object} mentor object containing updated mentor's details
 * @apiError {400} MentorNotFound The <code>id</code> supplied doesn't match any mentor
 */
+
 
 /**
 * @api {delete} /mentors/:mentorId
@@ -92,7 +97,7 @@
 *
 * @apiParam {String} mentor's unique id.
 
-* @apiSuccess {Object} Objects containing learner's details
+* @apiSuccess {Array of Objects} Objects containing request details
 * @apiError {400} MentorNotFound The <code>id</code> supplied doesn't match any mentor
 */
 
@@ -138,12 +143,12 @@
 *
 * @apiParam {String} mentor's unique id.
 
-* @apiSuccess {Object} Containing learner's details
+* @apiSuccess {Array of obejects} Containing request details which contains the learner's id
 * @apiError {400} Error status with error message.
 */
 
 /**
-* @api {post} /mentors/:mentorId/:requestId/accept
+* @api {post} /mentors/:mentorId/requests/:requestId/accept
 *
 * @apiDescription
 * Accept a request from a learner
@@ -153,7 +158,22 @@
 *
 * @apiParam {Object} Containing mentor's unique id and learner's unique id.
 
-* @apiSuccess {Object} Containing learner's details
+* @apiSuccess {200} message: Request has been accepted
+* @apiError {400} Error status with error message.
+*/
+
+/**
+* @api {post} /mentors/:mentorId/requests/:requestId/decline
+*
+* @apiDescription
+* Decline a request from a learner
+*
+* @apiName declineRequest
+* @apiGroup MentorsAPI
+*
+* @apiParam {Object} Containing mentor's unique id and learner's unique id.
+
+* @apiSuccess {200} message: Request has been declined
 * @apiError {400} Error status with error message.
 */
 
