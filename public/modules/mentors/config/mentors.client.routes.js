@@ -17,13 +17,9 @@ angular.module('mentors').config(['$stateProvider',
 			url: '/settings/mentors/accounts',
 			templateUrl: 'modules/mentors/views/settings/social-accounts.client.view.html'
 		}).
-		state('mentors/signup', {
-			url: '/mentors/signup',
-			templateUrl: 'modules/mentors/views/authentication/signup.client.view.html'
-		}).
-		state('chooseRole', {
-			url: '/role',
-			templateUrl: 'modules/mentors/views/authentication/signup.role.view.html'
+		state('mentors/apply', {
+			url: '/mentors/apply',
+			templateUrl: 'modules/mentors/views/authentication/apply.client.view.html'
 		}).
 		state('signin', {
 			url: '/signin',
