@@ -37,7 +37,7 @@
 * @apiParam {null} This method does not accept any parameters.
 *
 *
-* @apiSuccess {Array of Objects} An array of objects containing each mentor's details
+* @apiSuccess {Object} An array of objects containing each mentor's details
 * @apiError {400} Error 400 with the error response.
 */
 
@@ -97,7 +97,7 @@
 *
 * @apiParam {String} mentor's unique id.
 
-* @apiSuccess {Array of Objects} Objects containing request details
+* @apiSuccess {Object} Objects containing request details
 * @apiError {400} MentorNotFound The <code>id</code> supplied doesn't match any mentor
 */
 
@@ -143,7 +143,7 @@
 *
 * @apiParam {String} mentor's unique id.
 
-* @apiSuccess {Array of obejects} Containing request details which contains the learner's id
+* @apiSuccess {Object} Containing request details which contains the learner's id
 * @apiError {400} Error status with error message.
 */
 
