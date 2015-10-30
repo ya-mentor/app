@@ -139,6 +139,20 @@ module.exports = function(grunt) {
 			unit: {
 				configFile: 'karma.conf.js'
 			}
+		},
+		apidoc: {
+		  myapp: {
+		    src: "app/",
+		    dest: "docs/"
+		  }
+		},
+		serve: {
+		  options: {
+		    port: 9000,
+		    serve: {
+		      path: './docs/'
+		    }
+		  }
 		}
 	});
 
@@ -157,21 +171,10 @@ module.exports = function(grunt) {
 		grunt.config.set('applicationCSSFiles', config.assets.css);
 	});
 
-	// Default task(s).
 	grunt.registerTask('default', ['lint', 'concurrent:default']);
-
-	// Debug task.
 	grunt.registerTask('debug', ['lint', 'concurrent:debug']);
-
-	// Secure task(s).
 	grunt.registerTask('secure', ['env:secure', 'lint', 'concurrent:default']);
-
-	// Lint task(s).
 	grunt.registerTask('lint', ['jshint', 'csslint']);
-
-	// Build task(s).
 	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
-
-	// Test task.
 	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
 };
