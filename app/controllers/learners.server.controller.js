@@ -25,6 +25,7 @@ exports.create = function(req, res) {
 
 
 exports.list = function(req, res) {
+	// TODO: paginate (for large no of learners)
 	Learner.find().sort('-created').exec(function(err, learners) {
 		if (err) {
 			return res.status(400).send({
@@ -44,7 +45,6 @@ exports.read = function(req, res) {
 
 
 exports.update = function(req, res) {
-	console.log(3)
 	var learner = req.learner;
 
 	learner = _.extend(learner, req.body);
