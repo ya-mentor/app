@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('mentees').controller('SettingsController', ['$scope', '$http', '$location', 'mentees', 'Authentication',
-	function($scope, $http, $location, mentees, Authentication) {
+angular.module('mentees').controller('SettingsController', ['$scope', '$http', '$location', 'Mentees', 'Authentication',
+	function($scope, $http, $location, Mentees, Authentication) {
 		$scope.user = Authentication.user;
 
 		// If user is not signed in then redirect back home
 		if (!$scope.user) $location.path('/');
 
-		// Check if there are additional accounts 
+		// Check if there are additional accounts
 		$scope.hasConnectedAdditionalSocialAccounts = function(provider) {
 			for (var i in $scope.user.additionalProvidersData) {
 				return true;
@@ -42,7 +42,7 @@ angular.module('mentees').controller('SettingsController', ['$scope', '$http', '
 		$scope.updateUserProfile = function(isValid) {
 			if (isValid) {
 				$scope.success = $scope.error = null;
-				var user = new mentees($scope.user);
+				var user = new Mentees($scope.user);
 
 				user.$update(function(response) {
 					$scope.success = true;

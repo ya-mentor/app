@@ -9,7 +9,8 @@ var _ = require('lodash'),
   passport = require('passport'),
   User = mongoose.model('User'),
   Mentor = mongoose.model('Mentor'),
-  Learner = mongoose.model('Learner');
+  Learner = mongoose.model('Learner'),
+  Admin = mongoose.model('Admin');
 
 /**
  * Signup
@@ -17,62 +18,85 @@ var _ = require('lodash'),
 exports.signup = function(req, res) {
   // For security measurement we remove the roles from the req.body object
   delete req.body.roles;
-  if (req.body.role === 'learner') {
-    var learner = new Learner(req.body);
-    var message = null;
+  switch (req.body.role) {
+    case 'mentor':
+      var mentor = new Mentor(req.body);
 
-    // Add missing user fields
-    learner.provider = 'local';
-    // debugger;
-    // Then save the user
-    learner.save(function(err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        // Remove sensitive data before login
-        learner.password = undefined;
-        learner.salt = undefined;
+      // Add missing user fields
+      mentor.provider = 'local';
+      // Then save the user
+      mentor.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          // Remove sensitive data before login
+          mentor.password = undefined;
+          mentor.salt = undefined;
 
-        req.login(learner, function(err) {
-          if (err) {
-            res.status(400).send(err);
-          } else {
-            res.json(learner);
-          }
-        });
+          req.login(mentor, function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json(mentor);
+            }
+          });
+        }
+      });
+      break;
+
+    case 'admin':
+      if (req.body.adminToken !== process.env.ADMINTOKEN) {
+        return res.status(403).json({err: 'Token invalid'});
       }
-    });
-  }
-  else if (req.body.role === 'mentor') {
-  	var mentor = new Mentor(req.body);
+      var admin = new Admin(req.body);
+      admin.provider = 'local';
+      admin.isApproved = true;
+      admin.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          admin.password = undefined;
+          admin.salt = undefined;
 
-  	// Add missing user fields
-  	mentor.provider = 'local';
-  	// debugger;
-  	// Then save the user
-  	mentor.save(function(err) {
-  	  if (err) {
-  	    return res.status(400).send({
-  	      message: errorHandler.getErrorMessage(err)
-  	    });
-  	  } else {
-  	    // Remove sensitive data before login
-  	    mentor.password = undefined;
-  	    mentor.salt = undefined;
+          req.login(admin, function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json(admin);
+            }
+          });
+        }
+      });
+      break;
 
-  	    req.login(mentor, function(err) {
-  	      if (err) {
-  	        res.status(400).send(err);
-  	      } else {
-  	        res.json(mentor);
-  	      }
-  	    });
-  	  }
-  	});
+    default:
+      var learner = new Learner(req.body);
+      learner.provider = 'local';
+      learner.isApproved = true;
+      // Then save the user
+      learner.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          learner.password = undefined;
+          learner.salt = undefined;
+
+          req.login(learner, function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json(learner);
+            }
+          });
+        }
+      });
   }
-  // Init Variables
 };
 
 /**
@@ -89,10 +113,9 @@ exports.signin = function(req, res, next) {
 
       req.login(user, function(err) {
         if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
+          return res.status(400).send(err);
         }
+        res.json(user);
       });
     }
   })(req, res, next);

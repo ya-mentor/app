@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
   Mentor = mongoose.model('Mentor'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  filters = require('./filters');
 
 /**
  * Create a mentor
@@ -26,6 +27,23 @@ exports.create = function(req, res) {
   });
 };
 
+exports.list = function(req, res) {
+  var filter = filters.basecriteria;
+  filter.isApproved = true;
+  filter.role = 'mentor';
+  Mentor.find(filter).sort('-created').populate('user', 'userName').exec(function(err, mentors) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json({
+        count: mentors.length,
+        data: mentors
+      });
+    }
+  });
+};
 /**
  * Show the current mentor
  */
@@ -75,19 +93,12 @@ exports.delete = function(req, res) {
 /**
  * List of Mentors
  */
-exports.list = function(req, res) {
-  Mentor.find().where({
-    role: 'mentor'
-  }).sort('-created').populate('user', 'userName').exec(function(err, mentors) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(mentors);
-    }
-  });
-};
+
+// .where({
+//     role: 'mentor'
+//   })
+
+
 
 /**
  * Mentor middleware
@@ -104,14 +115,14 @@ exports.mentorByID = function(req, res, next, id) {
 /**
  * Request middleware
  */
-exports.requestByID = function(req, res, next, id) {
-  Request.findById(id).populate('user', 'userName').exec(function(err, request) {
-    if (err) return next(err);
-    if (!request) return next(new Error('Failed to load request ' + id));
-    req.request = request;
-    next();
-  });
-};
+// exports.requestByID = function(req, res, next, id) {
+//   Request.findById(id).populate('user', 'userName').exec(function(err, request) {
+//     if (err) return next(err);
+//     if (!request) return next(new Error('Failed to load request ' + id));
+//     req.request = request;
+//     next();
+//   });
+// };
 
 
 exports.getRequests = function(req, res) {
@@ -165,9 +176,8 @@ exports.requestMentor = function(req, res) {
 
     if (mentor.requests.length) {
       var match = _.find(mentor.requests, function(request) {
-        debugger;
         return request.from.toString() === req.user.id;
-      })
+      });
       if (typeof match !== 'undefined') {
         return res.status(400).send({
           message: 'You already requested this mentor'
@@ -197,10 +207,12 @@ exports.requestMentor = function(req, res) {
 exports.acceptRequest = function(req, res) {
   var query = {
     'requests._id': req.params.requestId,
-    'requests.status': "pending"
-  }
+    'requests.status': 'pending'
+  };
 
-  var update = { 'requests.$.status': "accepted" }
+  var update = {
+    'requests.$.status': 'accepted'
+  };
   Mentor.update(query, update, function(err, rawMessage) {
     if (err) {
       return res.status(400).send({
@@ -217,9 +229,11 @@ exports.acceptRequest = function(req, res) {
 exports.declineRequest = function(req, res) {
   var query = {
     'requests._id': req.params.requestId,
-    'requests.status': "pending"
-  }
-  var update = { 'requests.$.status': "rejected"}
+    'requests.status': 'pending'
+  };
+  var update = {
+    'requests.$.status': 'rejected'
+  };
   Mentor.update(query, update, function(err, rawMessage) {
     if (err) {
       return res.status(400).send({
@@ -244,7 +258,7 @@ exports.upvoteMentor = function(req, res) {
     if (mentor.rating.length) {
       var match = _.find(mentor.rating, function(rating) {
         return rating.by.toString() === req.user.id;
-      })
+      });
       if (typeof match !== 'undefined') {
         return res.status(400).send({
           message: 'You already upvoted this mentor'
@@ -265,7 +279,7 @@ exports.upvoteMentor = function(req, res) {
           message: 'You have upvoted this mentor'
         });
       }
-    })
+    });
   });
 };
 

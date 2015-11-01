@@ -102,6 +102,14 @@ var UserSchema = new Schema({
     type: String,
     default: ''
   },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  isApproved: {
+    type: Boolean,
+    default: false
+  },
   rating: [{
     by: {
       type: Schema.ObjectId,
@@ -152,6 +160,13 @@ var LearnerSchema = UserSchema.extend({
   }
 });
 
+var AdminSchema = UserSchema.extend({
+  role: {
+    type: String,
+    enum: ['admin'],
+    required: 'Role is req'
+  }
+});
 
 /**
  * Hook a pre save method to hash the password
@@ -289,3 +304,4 @@ mongoose.model('User', UserSchema);
 mongoose.model('Mentor', MentorSchema);
 mongoose.model('Learner', LearnerSchema);
 mongoose.model('Request', RequestSchema);
+mongoose.model('Admin', AdminSchema);

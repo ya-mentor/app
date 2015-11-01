@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('mentors').controller('SettingsController', ['$scope', '$http', '$location', 'mentors', 'Authentication',
-	function($scope, $http, $location, mentors, Authentication) {
+angular.module('mentors').controller('SettingsController', ['$scope', '$http', '$location', 'Mentors', 'Authentication',
+	function($scope, $http, $location, Mentors, Authentication) {
 		$scope.user = Authentication.user;
 
 		// If user is not signed in then redirect back home
 		if (!$scope.user) $location.path('/');
 
-		// Check if there are additional accounts 
+		// Check if there are additional accounts
 		$scope.hasConnectedAdditionalSocialAccounts = function(provider) {
 			for (var i in $scope.user.additionalProvidersData) {
 				return true;
@@ -42,7 +42,7 @@ angular.module('mentors').controller('SettingsController', ['$scope', '$http', '
 		$scope.updateUserProfile = function(isValid) {
 			if (isValid) {
 				$scope.success = $scope.error = null;
-				var user = new mentors($scope.user);
+				var user = new Mentors($scope.user);
 
 				user.$update(function(response) {
 					$scope.success = true;
