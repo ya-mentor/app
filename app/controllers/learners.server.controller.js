@@ -21,6 +21,10 @@ exports.list = function(req, res) {
   if (req.user.role === 'learner') {
     filter._id = { $ne : req.user._id };
   }
+  if (req.user.role === 'admin') {
+    delete filter.isApproved;
+    delete filter.isActive;
+  }
   Learner.find(filter).sort('-created').exec(function(err, learners) {
     if (err) {
       return res.status(400).send({

@@ -15,7 +15,9 @@ exports.loadSeed = function(req, res) {
   Learner.create(learners, function(err, docs) {
     if (err) {
       if (err.code === 11000) {
-        return res.status(400).json({err: 'Already seeded. Clear db to re-seed'});
+        return res.status(400).json({
+          err: 'Already seeded. Clear db to re-seed'
+        });
       }
       return res.json(err);
     }
@@ -26,6 +28,27 @@ exports.loadSeed = function(req, res) {
       return res.json({
         'status': 'success'
       });
+    });
+  });
+};
+
+exports.approveMentor = function(req, res) {
+  var mentorId = req.query.id;
+  var status = true;
+  if (req.query.status === 'false') {
+    status = false;
+  }
+  Mentor.findByIdAndUpdate(mentorId, {
+    isApproved: status
+  }, {
+    new: true
+  }, function(err, mentor) {
+    if (err) {
+      return res.status(500).json(err);
+    }
+    return res.json({
+      'status': 'success',
+      'data': mentor
     });
   });
 };

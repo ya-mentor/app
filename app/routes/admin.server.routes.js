@@ -9,4 +9,7 @@ var users = require('../../app/controllers/users.server.controller'),
 module.exports = function(app) {
   app.route('/seed')
     .get(admin.hasAdminAuthorization, admin.loadSeed);
+
+  app.route('/approve')
+    .get(admin.hasAdminAuthorization, admin.approveMentor);
 };

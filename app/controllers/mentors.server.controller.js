@@ -13,17 +13,23 @@ var mongoose = require('mongoose'),
  * Create a mentor
  */
 exports.apply = function(req, res) {
+  var mentor = new Mentor(req.body);
   // TODO: can also be used by admin to create a mentor acc
   // in which case set (isActive and isApproved to true)
-  var mentor = new Mentor(req.body);
+  if (req.user.role === 'admin') {
+    mentor.isApproved = true;
+    mentor.isActive = true;
+  }
   mentor.save(function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     }
-    // TODO: Send email (application received)
-    // TODO: If admin, dont send email.
+    if (req.user.role !== 'admin') {
+      console.info('send email');
+      // TODO: Send email (application received)
+    }
     res.status(200).json({
       status: 'done'
     });
@@ -38,7 +44,10 @@ exports.list = function(req, res) {
   if (req.user.role === 'mentor') {
     filter._id = { $ne : req.user._id };
   }
-  // debugger;
+  if (req.user.role === 'admin') {
+    delete filter.isApproved;
+    delete filter.isActive;
+  }
   Mentor.find(filter).sort('-created').populate('user', 'userName').exec(function(err, mentors) {
     if (err) {
       return res.status(400).send({
