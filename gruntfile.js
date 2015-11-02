@@ -142,8 +142,8 @@ module.exports = function(grunt) {
 		},
 		apidoc: {
 		  myapp: {
-		    src: "app/",
-		    dest: "docs/"
+		    src: 'app/',
+		    dest: 'docs/'
 		  }
 		},
 		serve: {
@@ -174,7 +174,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['lint', 'concurrent:default']);
 	grunt.registerTask('debug', ['lint', 'concurrent:debug']);
 	grunt.registerTask('secure', ['env:secure', 'lint', 'concurrent:default']);
-	grunt.registerTask('lint', ['jshint', 'csslint']);
+	grunt.registerTask('lint', ['jshint']);
 	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
 	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
 };

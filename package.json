@@ -2,6 +2,10 @@
   "name": "ya-mentor",
   "description": "mentorship and networking platform",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ya-mentor/app.git"
+  },
   "author": [
     "Ochu Kingsley Chitech <kingsley.ochu@andela.co>",
     "Seun Martins <oluwaseun.martins@andela.co>",

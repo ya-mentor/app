@@ -7,15 +7,13 @@ var users = require('../../app/controllers/users.server.controller'),
 	learners = require('../../app/controllers/learners.server.controller');
 
 module.exports = function(app) {
-	// Article Routes
 	app.route('/learners')
-		.get(learners.list)
-		.post(users.requiresLogin, learners.create);
+		.get(users.requiresLogin, learners.list); // only see other learners if you're a user
 
 	app.route('/learners/:learnerId')
 		.get(learners.read)
-		.put(users.requiresLogin, learners.checkPermission, learners.update)
-		.delete(users.requiresLogin, learners.checkPermission, learners.delete);
+		.put(users.requiresLogin, learners.hasAuthorization, learners.update)
+		.delete(users.requiresLogin, learners.hasAuthorization, learners.delete);
 
 	// app.route('/learners/:id/requests')
 	// 	.get(users.requiresLogin, users.hasAuthorization, learners.getRequests);

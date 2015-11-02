@@ -102,6 +102,14 @@ var UserSchema = new Schema({
     type: String,
     default: ''
   },
+  isActive: {
+    type: Boolean,
+    default: false
+  },
+  isApproved: {
+    type: Boolean,
+    default: false
+  },
   rating: [{
     by: {
       type: Schema.ObjectId,
@@ -152,6 +160,13 @@ var LearnerSchema = UserSchema.extend({
   }
 });
 
+var AdminSchema = UserSchema.extend({
+  role: {
+    type: String,
+    enum: ['admin'],
+    required: 'Role is req'
+  }
+});
 
 /**
  * Hook a pre save method to hash the password
@@ -175,6 +190,15 @@ MentorSchema.pre('save', function(next) {
 });
 
 LearnerSchema.pre('save', function(next) {
+  if (this.password && this.password.length > 6) {
+    this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+    this.password = this.hashPassword(this.password);
+  }
+
+  next();
+});
+
+AdminSchema.pre('save', function(next) {
   if (this.password && this.password.length > 6) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
@@ -210,6 +234,14 @@ LearnerSchema.methods.hashPassword = function(password) {
   }
 };
 
+AdminSchema.methods.hashPassword = function(password) {
+  if (this.salt && password) {
+    return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
+  } else {
+    return password;
+  }
+};
+
 /**
  * Create instance method for authenticating user
  */
@@ -222,6 +254,10 @@ MentorSchema.methods.authenticate = function(password) {
 };
 
 LearnerSchema.methods.authenticate = function(password) {
+  return this.password === this.hashPassword(password);
+};
+
+AdminSchema.methods.authenticate = function(password) {
   return this.password === this.hashPassword(password);
 };
 
@@ -285,7 +321,27 @@ LearnerSchema.statics.findUniqueUsername = function(username, suffix, callback) 
   });
 };
 
+AdminSchema.statics.findUniqueUsername = function(username, suffix, callback) {
+  var _this = this;
+  var possibleUsername = username + (suffix || '');
+
+  _this.findOne({
+    username: possibleUsername
+  }, function(err, user) {
+    if (!err) {
+      if (!user) {
+        callback(possibleUsername);
+      } else {
+        return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
+      }
+    } else {
+      callback(null);
+    }
+  });
+};
+
 mongoose.model('User', UserSchema);
 mongoose.model('Mentor', MentorSchema);
 mongoose.model('Learner', LearnerSchema);
 mongoose.model('Request', RequestSchema);
+mongoose.model('Admin', AdminSchema);

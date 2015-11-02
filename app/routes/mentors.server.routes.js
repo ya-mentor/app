@@ -1,17 +1,12 @@
 'use strict';
 
-
-/**
- * Module dependencies.
- */
 var users = require('../../app/controllers/users.server.controller'),
   mentors = require('../../app/controllers/mentors.server.controller');
 
 module.exports = function(app) {
-  // Mentor Routes
   app.route('/mentors')
     .get(mentors.list)
-    .post(users.requiresLogin, mentors.create);
+    .post(mentors.apply);
 
   app.route('/mentors/:mentorId')
     .get(mentors.read)

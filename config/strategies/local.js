@@ -5,7 +5,9 @@
  */
 var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,
-	User = require('mongoose').model('User');
+	Learner = require('mongoose').model('Learner'),
+	Mentor = require('mongoose').model('Mentor'),
+	Admin = require('mongoose').model('Admin');
 
 module.exports = function() {
 	// Use local strategy
@@ -14,7 +16,7 @@ module.exports = function() {
 			passwordField: 'password'
 		},
 		function(username, password, done) {
-			User.findOne({
+			Admin.findOne({
 				username: username
 			}, function(err, user) {
 				if (err) {
@@ -25,6 +27,7 @@ module.exports = function() {
 						message: 'Unknown user or invalid password'
 					});
 				}
+				// debugger;
 				if (!user.authenticate(password)) {
 					return done(null, false, {
 						message: 'Unknown user or invalid password'
