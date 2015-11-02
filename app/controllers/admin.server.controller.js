@@ -15,7 +15,7 @@ exports.loadSeed = function(req, res) {
   Learner.create(learners, function(err, docs) {
     if (err) {
       if (err.code === 11000) {
-        return res.json('Already seeded. Clear db to re-seed');
+        return res.status(400).json({err: 'Already seeded. Clear db to re-seed'});
       }
       return res.json(err);
     }

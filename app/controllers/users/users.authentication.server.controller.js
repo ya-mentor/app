@@ -19,32 +19,8 @@ exports.signup = function(req, res) {
   // For security measurement we remove the roles from the req.body object
   delete req.body.roles;
   switch (req.body.role) {
-    case 'mentor':
-      var mentor = new Mentor(req.body);
-
-      // Add missing user fields
-      mentor.provider = 'local';
-      // Then save the user
-      mentor.save(function(err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          // Remove sensitive data before login
-          mentor.password = undefined;
-          mentor.salt = undefined;
-
-          req.login(mentor, function(err) {
-            if (err) {
-              res.status(400).send(err);
-            } else {
-              res.json(mentor);
-            }
-          });
-        }
-      });
-      break;
+    // case 'mentor':
+    // not needed. Mentors don't signup, they apply
 
     case 'admin':
       if (req.body.adminToken !== process.env.ADMINTOKEN) {
@@ -53,6 +29,7 @@ exports.signup = function(req, res) {
       var admin = new Admin(req.body);
       admin.provider = 'local';
       admin.isApproved = true;
+      admin.isActive = true;
       admin.save(function(err) {
         if (err) {
           return res.status(400).send({
@@ -76,8 +53,13 @@ exports.signup = function(req, res) {
     default:
       var learner = new Learner(req.body);
       learner.provider = 'local';
-      learner.isApproved = true;
       // Then save the user
+      // TODO: If via social login, approve account (learner.isApproved = true; and learner.isActive == true)
+            // else Send confirmation email
+
+      // approve vs activate: isApproved (user have been confirmed). isActive (account is dormant)
+      // mentor approval vs learner approval: mentor's approval is done by admin
+      // while for the learner is done by self (in email or social)
       learner.save(function(err) {
         if (err) {
           return res.status(400).send({

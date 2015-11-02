@@ -8,7 +8,7 @@ var users = require('../../app/controllers/users.server.controller'),
 
 module.exports = function(app) {
 	app.route('/learners')
-		.get(learners.list);
+		.get(users.requiresLogin, learners.list); // only see other learners if you're a user
 
 	app.route('/learners/:learnerId')
 		.get(learners.read)

@@ -8,27 +8,19 @@ var mongoose = require('mongoose'),
   filters = require('./filters');
 
 
-exports.create = function(req, res) {
-  var learner = new Learner(req.body);
-  learner.user = req.user;
-
-  learner.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(learner);
-    }
-  });
-};
+// exports.create
+// Not needed. Signup happens in users controller
 
 
 
 exports.list = function(req, res) {
   // TODO: paginate (for large no of learners)
-  var filter = filters.basecriteria;
+  var filter = _.cloneDeep(filters.basecriteria);
   filter.role = 'learner';
+  // if a learner is logged in (filter out his acct)
+  if (req.user.role === 'learner') {
+    filter._id = { $ne : req.user._id };
+  }
   Learner.find(filter).sort('-created').exec(function(err, learners) {
     if (err) {
       return res.status(400).send({
@@ -42,7 +34,6 @@ exports.list = function(req, res) {
     }
   });
 };
-
 
 
 exports.read = function(req, res) {
