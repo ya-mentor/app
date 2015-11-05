@@ -12,4 +12,10 @@ module.exports = function(app) {
 
   app.route('/approve')
     .get(admin.hasAdminAuthorization, admin.approveMentor);
+
+  app.route('/delete/:id')
+    .get(admin.hasAdminAuthorization, admin.deleteAccount);
+
+  app.param('id', admin.useID);
+
 };

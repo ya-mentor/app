@@ -15,6 +15,9 @@ module.exports = function(app) {
 		.put(users.requiresLogin, learners.hasAuthorization, learners.update)
 		.delete(users.requiresLogin, learners.hasAuthorization, learners.delete);
 
+	app.route('/deactivate')
+		.get(users.requiresLogin, users.hasAuthorization, learners.delete);
+
 	// app.route('/learners/:id/requests')
 	// 	.get(users.requiresLogin, users.hasAuthorization, learners.getRequests);
 
