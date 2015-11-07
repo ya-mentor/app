@@ -34,9 +34,15 @@ exports.loadSeed = function(req, res) {
 
 exports.approveMentor = function(req, res) {
   var mentorId = req.query.id;
-  var status = true;
+  var status;
   if (req.query.status === 'false') {
     status = false;
+  } else if (req.query.status === 'true') {
+    status = true;
+  } else {
+    return res.status(400).json({
+      message: 'bad request'
+    });
   }
   Mentor.findByIdAndUpdate(mentorId, {
     isApproved: status
@@ -54,7 +60,12 @@ exports.approveMentor = function(req, res) {
 };
 
 exports.deleteAccount = function(req, res) {
-  var cb = function(err, user) {
+  // works for both learners and mentors
+  Mentor.findByIdAndUpdate(req.query.id, {
+    isActive: false
+  }, {
+    new: true
+  }, function(err, user) {
     if (err) {
       return res.status(500).json(err);
     }
@@ -62,33 +73,25 @@ exports.deleteAccount = function(req, res) {
       'status': 'success',
       'data': user
     });
-  };
-
-  switch (req.query.status) {
-    case 'mentor':
-      Mentor.findByIdAndUpdate(req.id, {
-        isActive: false
-      }, {
-        new: true
-      }, cb);
-    break;
-
-    case 'learner':
-      Learner.findByIdAndUpdate(req.id, {
-        isActive: false
-      }, {
-        new: true
-      }, cb);
-    break;
-  }
+  });
 };
 
-exports.useId = function(req, res, next, id) {
-  if (id.toString().length) {
-    req.id = id;
-    return next();
-  }
-  res.status(400).json({message: 'Invalid id'});
+exports.reactivate = function(req, res) {
+  // works for both learners and mentors
+  Mentor.findByIdAndUpdate(req.query.id, {
+    isActive: true
+  }, {
+    new: true
+  }, function(err, user) {
+    if (err) {
+      return res.status(500).json(err);
+    }
+    return res.json({
+      'status': 'success',
+      'data': user
+    });
+  });
+
 };
 
 exports.hasAdminAuthorization = function(req, res, next) {

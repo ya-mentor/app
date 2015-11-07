@@ -13,9 +13,10 @@ module.exports = function(app) {
   app.route('/approve')
     .get(admin.hasAdminAuthorization, admin.approveMentor);
 
-  app.route('/delete/:id')
+  app.route('/delete')
     .get(admin.hasAdminAuthorization, admin.deleteAccount);
 
-  app.param('id', admin.useID);
+  app.route('/reactivate')
+    .get(admin.hasAdminAuthorization, admin.reactivate);
 
 };
